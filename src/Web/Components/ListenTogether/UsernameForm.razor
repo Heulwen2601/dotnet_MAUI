@@ -1,0 +1,46 @@
+﻿<div class="usernameModal">
+    <p class="usernameModal__info">
+        Có vẻ như bạn chưa đăng ký. Vui lòng cho chúng tôi biết tên bạn muốn sử dụng trong phòng này.
+    </p>
+    <h3 class="usernameModal__title">Tên của bạn là gì?</h3>
+    <EditForm Model="@formModel" OnValidSubmit="@HandleValidSubmit">
+        <DataAnnotationsValidator />
+
+        <div class="usernameModal__input">
+            <InputText @ref="inputRef" class="inputApp" @bind-Value="formModel.User" placeholder="Tên của bạn" />
+            <ValidationSummary />
+        </div>
+
+        <button type="submit" class="buttonApp primary" title="@(IsCreatingRoom ? "Mở phòng" : "Tham gia phòng")">
+            <span class="buttonApp-icon icon-listen-together"></span>
+            <span>@(IsCreatingRoom ? "Mở phòng" : "Tham gia phòng")</span>
+        </button>
+    </EditForm>
+</div>
+
+@code {
+    private record FormModel()
+    {
+        [Required] public string? User { get; set; }
+    };
+
+    [EditorRequired]
+    [Parameter]
+    public bool IsCreatingRoom { get; set; } = false;
+
+    [Parameter]
+    public EventCallback<string> OnSetUsername { get; set; }
+
+    private InputText? inputRef;
+    private FormModel formModel = new();
+
+    private Task HandleValidSubmit() => OnSetUsername.InvokeAsync(formModel.User);
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && inputRef?.Element != null)
+        {
+            await inputRef.Element.Value.FocusAsync();
+        }
+    }
+}

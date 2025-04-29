@@ -1,0 +1,15 @@
+﻿<Router AppAssembly="@typeof(App).Assembly"
+        AdditionalAssemblies="new[] { typeof(MainLayout).Assembly}">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <PageTitle>.NET Podcasts - Không tìm thấy</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <div class="contentWrapper">
+                <p role="alert">Xin lỗi, không có nội dung nào tại địa chỉ này.</p>
+            </div>
+        </LayoutView>
+    </NotFound>
+</Router>

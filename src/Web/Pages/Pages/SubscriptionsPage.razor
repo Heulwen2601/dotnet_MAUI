@@ -1,0 +1,60 @@
+﻿@page "/subscriptions"
+@implements IDisposable
+@inject SubscriptionsService SubscriptionsService
+
+<PageTitle>.NET Podcasts - Đăng ký</PageTitle>
+
+@if (showSubscriptions == null)
+{
+    <Spinner />
+}
+else
+{
+    <div class="containerPage">
+        <div class="titleWrapper">
+            <TitlePage Label="Đăng ký" />
+        </div>
+
+        <Grid Items="@showSubscriptions" TItem="ShowInfo">
+            <ItemTemplate Context="item">
+                <NavLink @key="item.Id" href="@($"show/{item.Id}")">
+                    <ShowCard Id="@item.Id" Title="@item.Title" Author="@item.Author" Image="@item.Image" />
+                </NavLink>
+            </ItemTemplate>
+            <EmptyResults>
+                <NoResults Message="Bạn chưa đăng ký kênh nào."
+                           Description="Khám phá các nội dung phù hợp với sở thích của bạn."
+                           Image="_content/Podcast.Pages/images/no-subscriptions.png" />
+            </EmptyResults>
+        </Grid>
+    </div>
+}
+
+@code {
+    private IEnumerable<ShowInfo>? showSubscriptions;
+
+    protected override void OnInitialized()
+    {
+        SubscriptionsService.SubscriptionsChanged += UpdateShowSubscriptions;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            showSubscriptions = await SubscriptionsService.GetShowSubscriptionsAsync();
+            StateHasChanged();
+        }
+    }
+
+    public void Dispose()
+    {
+        SubscriptionsService.SubscriptionsChanged -= UpdateShowSubscriptions;
+    }
+
+    private async void UpdateShowSubscriptions(IEnumerable<ShowInfo> subscriptions)
+    {
+        showSubscriptions = subscriptions;
+        await InvokeAsync(StateHasChanged);
+    }
+}

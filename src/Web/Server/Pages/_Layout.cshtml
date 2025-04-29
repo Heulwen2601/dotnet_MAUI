@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@namespace Podcast.Server.Pages
+@using Podcast.Client
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>.NET Podcasts</title>
+    <base href="~/" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="preload" href="_content/Podcast.Components/css/fonts/SegoeUI.woff" as="font" type="font/woff" crossorigin />
+    <link rel="preload" href="_content/Podcast.Components/css/fonts/SegoeUISemibold.woff" as="font" type="font/woff" crossorigin />
+    <link href="_content/Podcast.Components/css/site.css" rel="stylesheet" />
+    <link href="Podcast.Client.styles.css" rel="stylesheet" />
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" sizes="512x512" href="images/icon-512.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="images/icon-192.png" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#faf9f8">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#32313f">
+    <component type="typeof(HeadOutlet)" render-mode="WebAssemblyPrerendered" />
+</head>
+<body>
+    <script src="_content/Podcast.Pages/js/theme.js"></script>
+
+    @RenderBody()
+
+    <div id="blazor-error-ui">
+        <environment include="Staging,Production">
+            Đã xảy ra lỗi. Ứng dụng có thể không phản hồi cho đến khi bạn tải lại trang.
+        </environment>
+        <environment include="Development">
+            Đã xảy ra ngoại lệ chưa được xử lý. Xem chi tiết trong công cụ phát triển trình duyệt.
+        </environment>
+        <a href="" class="reload">Tải lại</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <persist-component-state />
+
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="_content/Podcast.Pages/js/customEvents.js"></script>
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
+</body>
+</html>
